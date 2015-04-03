@@ -21,12 +21,15 @@ namespace AspNet5Host
         {
             var idsrv3test = "idsrv3test.pfx";
             var certFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, idsrv3test);
+            Console.WriteLine("current domain: " + certFile);
             if (!File.Exists(certFile))
             {
                 var localFile = Path.Combine(Environment.CurrentDirectory, idsrv3test);
+                Console.WriteLine("current environment: " + localFile);
                 if (!File.Exists(localFile))
                 {
                     localFile = Path.Combine(Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location), idsrv3test);
+                    Console.WriteLine("assembly location: " + localFile);
                 }
 
                 File.Copy(localFile, certFile);
