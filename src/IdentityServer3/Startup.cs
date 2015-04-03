@@ -7,6 +7,9 @@ using AspNet5Host.Configuration;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
 using System.Reflection;
+using Microsoft.AspNet.Diagnostics;
+using Microsoft.Framework.Logging;
+using Microsoft.Framework.Logging.Console;
 using Thinktecture.IdentityServer.Core.Logging;
 
 namespace AspNet5Host
@@ -16,6 +19,50 @@ namespace AspNet5Host
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+        }
+
+        //This method is invoked when ASPNET_ENV is 'Development' or is not defined
+        //The allowed values are Development,Staging and Production
+        public void ConfigureDevelopment(IApplicationBuilder app, ILoggerFactory loggerFactory)
+        {
+            loggerFactory.AddConsole();
+
+            //Display custom error page in production when error occurs
+            //During development use the ErrorPage middleware to display error information in the browser
+            app.UseErrorPage(ErrorPageOptions.ShowAll);
+
+            // Add the runtime information page that can be used by developers
+            // to see what packages are used by the application
+            // default path is: /runtimeinfo
+            app.UseRuntimeInfoPage();
+
+            Configure(app);
+        }
+
+        //This method is invoked when ASPNET_ENV is 'Staging'
+        //The allowed values are Development,Staging and Production
+        public void ConfigureStaging(IApplicationBuilder app, ILoggerFactory loggerFactory)
+        {
+            loggerFactory.AddConsole();
+
+            //app.UseErrorHandler("/Home/Error");
+
+            app.UseErrorPage(ErrorPageOptions.ShowAll);
+
+            Configure(app);
+        }
+
+        //This method is invoked when ASPNET_ENV is 'Production'
+        //The allowed values are Development,Staging and Production
+        public void ConfigureProduction(IApplicationBuilder app, ILoggerFactory loggerFactory)
+        {
+            loggerFactory.AddConsole();
+
+            //app.UseErrorHandler("/Home/Error");
+
+            app.UseErrorPage(ErrorPageOptions.ShowAll);
+
+            Configure(app);
         }
 
         public void Configure(IApplicationBuilder app)
