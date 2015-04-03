@@ -18,7 +18,7 @@ namespace AspNet5Host
 
         public void Configure(IApplicationBuilder app)
         {
-            var certFile = AppDomain.CurrentDomain.BaseDirectory + "\\idsrv3test.pfx";
+            var certFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "idsrv3test.pfx");
 
             app.Map("/core", core =>
             {
