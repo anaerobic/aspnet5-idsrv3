@@ -6,6 +6,7 @@ using Thinktecture.IdentityServer.Core.Configuration;
 using AspNet5Host.Configuration;
 using System.Security.Cryptography.X509Certificates;
 using System.IO;
+using System.Reflection;
 
 namespace AspNet5Host
 {
@@ -18,24 +19,35 @@ namespace AspNet5Host
 
         public void Configure(IApplicationBuilder app)
         {
-            var certFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "idsrv3test.pfx");
+            var idsrv3test = "idsrv3test.pfx";
+            var certFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, idsrv3test);
+            if (!File.Exists(certFile))
+            {
+                var localFile = Path.Combine(Environment.CurrentDirectory, idsrv3test);
+                if (!File.Exists(localFile))
+                {
+                    localFile = Path.Combine(Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location), idsrv3test);
+                }
+
+                File.Copy(localFile, certFile);
+            }
 
             app.Map("/core", core =>
+        {
+            var factory = InMemoryFactory.Create(
+                            users: Users.Get(),
+                            clients: Clients.Get(),
+                            scopes: Scopes.Get());
+
+            var idsrvOptions = new IdentityServerOptions
             {
-                var factory = InMemoryFactory.Create(
-                                users: Users.Get(),
-                                clients: Clients.Get(),
-                                scopes: Scopes.Get());
+                Factory = factory,
+                RequireSsl = false,
+                SigningCertificate = new X509Certificate2(certFile, "idsrv3test")
+            };
 
-                var idsrvOptions = new IdentityServerOptions
-                {
-                    Factory = factory,
-                    RequireSsl = false,
-                    SigningCertificate = new X509Certificate2(certFile, "idsrv3test")
-                };
-
-                core.UseIdentityServer(idsrvOptions);
-            });
+            core.UseIdentityServer(idsrvOptions);
+        });
         }
     }
 }
