@@ -4,6 +4,7 @@ using Microsoft.AspNet.Diagnostics;
 using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
 using Microsoft.Framework.Logging.Console;
+using Microsoft.Owin.Security.DataProtection;
 using Thinktecture.IdentityServer.Core.Configuration;
 using Thinktecture.IdentityServer.Core.Logging;
 
@@ -14,7 +15,7 @@ namespace AspNet5Host
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddInstance(typeof(Microsoft.Owin.Security.DataProtection.IDataProtectionProvider),
+            services.AddInstance(typeof(IDataProtectionProvider),
                 new MonoDataProtectionProvider("idsrv3")); //services.Properties["host.AppName"] as string
         }
 
@@ -84,6 +85,8 @@ namespace AspNet5Host
 
                 core.UseIdentityServer(idsrvOptions);
             });
+
+            app.UseStaticFiles();
         }
     }
 }

@@ -1,12 +1,10 @@
-﻿using Microsoft.Owin.Security.DataProtection;
-using System;
+﻿using System;
 using System.IO;
 using System.Security.Cryptography;
-using System.Text;
+using Microsoft.Owin.Security.DataProtection;
 
-namespace NoesisLabs.IdSrv.Example
-{
-    public class MonoDataProtector : IDataProtector
+namespace AspNet5Host.Configuration
+{public class MonoDataProtector : IDataProtector
     {
         private const string PRIMARY_PURPOSE = "Microsoft.Owin.Security.IDataProtector";
 
@@ -36,16 +34,16 @@ namespace NoesisLabs.IdSrv.Example
 
         private byte[] GetEntropy()
         {
-            using (SHA256 sha256 = SHA256.Create())
+            using (var sha256 = SHA256.Create())
             {
-                using (MemoryStream memoryStream = new MemoryStream())
-                using (CryptoStream cryptoStream = new CryptoStream(memoryStream, sha256, CryptoStreamMode.Write))
-                using (StreamWriter writer = new StreamWriter(cryptoStream))
+                using (var memoryStream = new MemoryStream())
+                using (var cryptoStream = new CryptoStream(memoryStream, sha256, CryptoStreamMode.Write))
+                using (var writer = new StreamWriter(cryptoStream))
                 {
                     writer.Write(this.appName);
                     writer.Write(PRIMARY_PURPOSE);
 
-                    foreach (string purpose in this.purposes)
+                    foreach (var purpose in this.purposes)
                     {
                         writer.Write(purpose);
                     }

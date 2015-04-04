@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.Owin.Security.DataProtection;
-using NoesisLabs.IdSrv.Example;
 
 namespace AspNet5Host.Configuration
 {
