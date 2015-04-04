@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Microsoft.Owin.Hosting;
 
 namespace AspNet5Host
@@ -11,7 +10,6 @@ namespace AspNet5Host
             string url = "http://localhost:5004";
             using (WebApp.Start<Startup_Mono>(url))
             {
-                Process.Start(url); // Launch the browser.
                 Console.WriteLine("Press Enter to exit...");
                 Console.ReadLine();
             }
