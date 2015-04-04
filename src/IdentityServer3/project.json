@@ -12,6 +12,8 @@
         "Thinktecture.IdentityServer3": "1.4.0",
         "Thinktecture.IdentityModel.Core": "1.4.0",
         "Microsoft.Owin": "3.0.1",
+        "Microsoft.Owin.Hosting": "3.0.1",
+        "Microsoft.Owin.Host.HttpListener":  "3.0.1",
         "Microsoft.Owin.Security": "3.0.1",
         "Microsoft.Owin.Security.Google": "3.0.1", 
         "Microsoft.Owin.Security.OpenIdConnect": "3.0.1",
@@ -30,6 +32,11 @@
         "**.kproj",
         "**.user",
         "**.vspscc"
+    ],
+    "packExclude": [ 
+        "**.kproj", 
+        "**.user", 
+        "**.vspscc" 
     ],
     "exclude": [
         "wwwroot",
