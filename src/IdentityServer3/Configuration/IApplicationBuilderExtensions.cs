@@ -6,12 +6,14 @@ using Owin;
 using Microsoft.Framework.DependencyInjection;
 
 
+// ReSharper disable once CheckNamespace
 namespace Microsoft.AspNet.Builder
 {
 
     using DataProtectionProviderDelegate = Func<string[], Tuple<Func<byte[], byte[]>, Func<byte[], byte[]>>>;
     using DataProtectionTuple = Tuple<Func<byte[], byte[]>, Func<byte[], byte[]>>;
 
+    // ReSharper disable once InconsistentNaming
     public static class IApplicationBuilderExtensions
     {
         public static void UseIdentityServer(this IApplicationBuilder app, IdentityServerOptions options)
@@ -20,15 +22,13 @@ namespace Microsoft.AspNet.Builder
             {
                 addToPipeline(next =>
                 {
-
-
                     var builder = new Microsoft.Owin.Builder.AppBuilder();
 
-                    var provider = app.ApplicationServices.GetService<Microsoft.AspNet.Security.DataProtection.IDataProtectionProvider>();
+                    var provider = app.ApplicationServices.GetService<Microsoft.Owin.Security.DataProtection.IDataProtectionProvider>();
 
                     builder.Properties["security.DataProtectionProvider"] = new DataProtectionProviderDelegate(purposes =>
                     {
-                        var dataProtection = provider.CreateProtector(String.Join(",", purposes));
+                        var dataProtection = provider.Create(String.Join(",", purposes));
                         return new DataProtectionTuple(dataProtection.Protect, dataProtection.Unprotect);
                     });
 

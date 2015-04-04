@@ -1,15 +1,10 @@
-﻿using System;
+﻿using AspNet5Host.Configuration;
 using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Http;
-using Microsoft.Framework.DependencyInjection;
-using Thinktecture.IdentityServer.Core.Configuration;
-using AspNet5Host.Configuration;
-using System.Security.Cryptography.X509Certificates;
-using System.IO;
-using System.Reflection;
 using Microsoft.AspNet.Diagnostics;
+using Microsoft.Framework.DependencyInjection;
 using Microsoft.Framework.Logging;
 using Microsoft.Framework.Logging.Console;
+using Thinktecture.IdentityServer.Core.Configuration;
 using Thinktecture.IdentityServer.Core.Logging;
 
 namespace AspNet5Host
@@ -19,6 +14,8 @@ namespace AspNet5Host
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddInstance(typeof(Microsoft.Owin.Security.DataProtection.IDataProtectionProvider),
+                new MonoDataProtectionProvider("idsrv3")); //services.Properties["host.AppName"] as string
         }
 
         //This method is invoked when ASPNET_ENV is 'Development' or is not defined
@@ -67,22 +64,6 @@ namespace AspNet5Host
 
         public void Configure(IApplicationBuilder app)
         {
-            var idsrv3test = "idsrv3test.pfx";
-            var certFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, idsrv3test);
-            Console.WriteLine("current domain: " + certFile);
-            if (!File.Exists(certFile))
-            {
-                var localFile = Path.Combine(Environment.CurrentDirectory, idsrv3test);
-                Console.WriteLine("current environment: " + localFile);
-                if (!File.Exists(localFile))
-                {
-                    localFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), idsrv3test);
-                    Console.WriteLine("assembly location: " + localFile);
-                }
-
-                File.Copy(localFile, certFile);
-            }
-
             LogProvider.SetCurrentLogProvider(new DiagnosticsTraceLogProvider());
             //LogProvider.SetCurrentLogProvider(new TraceSourceLogProvider());
 
@@ -97,7 +78,8 @@ namespace AspNet5Host
                 {
                     Factory = factory,
                     RequireSsl = false,
-                    SigningCertificate = new X509Certificate2(certFile, "idsrv3test")
+                    SigningCertificate = Certificate.Get(),
+                    CorsPolicy = CorsPolicy.AllowAll
                 };
 
                 core.UseIdentityServer(idsrvOptions);
