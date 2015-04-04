@@ -68,6 +68,8 @@ namespace AspNet5Host
             LogProvider.SetCurrentLogProvider(new DiagnosticsTraceLogProvider());
             //LogProvider.SetCurrentLogProvider(new TraceSourceLogProvider());
 
+            app.UseStaticFiles();
+
             app.Map("/core", core =>
             {
                 var factory = InMemoryFactory.Create(
@@ -85,8 +87,6 @@ namespace AspNet5Host
 
                 core.UseIdentityServer(idsrvOptions);
             });
-
-            app.UseStaticFiles();
         }
     }
 }
