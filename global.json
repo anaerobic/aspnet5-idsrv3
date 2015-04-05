@@ -1,5 +1,5 @@
 ﻿{
-    "sources": [ "src", "test" ],
+    "sources": [ "wrap" ],
     "sdk": {
         "version": "1.0.0-beta3"
     }

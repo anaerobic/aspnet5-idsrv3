@@ -2,25 +2,6 @@
     "webroot": "wwwroot",
     "version": "1.0.0-*",
       "dependencies": {
-        "Autofac": "3.5.2",
-        "Autofac.WebApi2": "3.4.0",
-        "ilmerge": "2.14.1208",
-        "LibLog": "2.0.1",
-        "Microsoft.AspNet.Cors": "5.2.3",
-        "Microsoft.AspNet.WebApi.Client": "5.2.3",
-        "Microsoft.AspNet.WebApi.Core": "5.2.3",
-        "Microsoft.AspNet.WebApi.Owin": "5.2.3",
-        "Microsoft.AspNet.WebApi.Tracing": "5.2.3",
-        "Microsoft.Owin": "3.0.1",
-        "Microsoft.Owin.Cors": "3.0.1",
-        "Microsoft.Owin.FileSystems": "3.0.1",
-        "Microsoft.Owin.Security": "3.0.1",
-        "Microsoft.Owin.Security.Cookies": "3.0.1",
-        "Microsoft.Owin.StaticFiles": "3.0.1",
-        "Newtonsoft.Json": "6.0.8",
-        "Owin": "1.0",
-        "System.IdentityModel.Tokens.Jwt": "4.0.2.202250711",
-        "Thinktecture.IdentityModel.Core": "1.4.0",
 
         "Kestrel": "1.0.0-beta3",        
         "Microsoft.AspNet.Diagnostics": "1.0.0-beta3", 
@@ -29,8 +10,8 @@
         "Microsoft.AspNet.Security.DataProtection": "1.0.0.0-beta3",
         "Microsoft.AspNet.Server.WebListener": "1.0.0-beta3",
         "Microsoft.AspNet.StaticFiles": "1.0.0-beta3",
-        "Thinktecture.IdentityServer3": "1.4.0",
         "Thinktecture.IdentityModel.Core": "1.4.0",
+        "Microsoft.Owin": "3.0.1",
         "Microsoft.Owin.Hosting": "3.0.1",
         "Microsoft.Owin.Host.HttpListener":  "3.0.1",
         "Microsoft.Owin.Security.Google": "3.0.1", 
@@ -42,7 +23,11 @@
         "kestrel": "Microsoft.AspNet.Hosting --server Kestrel --server.urls http://localhost:5004"
     },
     "frameworks": {
-        "aspnet50": { }
+        "aspnet50": {
+            "dependencies": {
+                "Thinktecture.IdentityServer3": "1.0.0-*"
+            }
+        }
     },
     "bundleExclude": [
         "node_modules",
