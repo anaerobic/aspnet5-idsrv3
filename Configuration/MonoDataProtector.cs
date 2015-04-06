@@ -4,7 +4,8 @@ using System.Security.Cryptography;
 using Microsoft.Owin.Security.DataProtection;
 
 namespace AspNet5Host.Configuration
-{public class MonoDataProtector : IDataProtector
+{
+    public class MonoDataProtector : IDataProtector, Thinktecture.IdentityServer.Core.Configuration.IDataProtector
     {
         private const string PRIMARY_PURPOSE = "Microsoft.Owin.Security.IDataProtector";
 
@@ -47,10 +48,21 @@ namespace AspNet5Host.Configuration
                     {
                         writer.Write(purpose);
                     }
+                    Console.WriteLine("purposes: " + String.Join(",", purposes));
                 }
 
                 return sha256.Hash;
             }
+        }
+
+        public byte[] Protect(byte[] data, string entropy = "")
+        {
+            return Protect(data);
+        }
+
+        public byte[] Unprotect(byte[] data, string entropy = "")
+        {
+            return Unprotect(data);
         }
     }
 }

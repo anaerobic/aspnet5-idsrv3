@@ -24,6 +24,8 @@ namespace Microsoft.AspNet.Builder
                 {
                     var builder = new Microsoft.Owin.Builder.AppBuilder();
 
+                   // builder.SetDataProtectionProvider(new MonoDataProtectionProvider(app.Properties["host.AppName"] as string));
+
                     var provider = app.ApplicationServices.GetService<Microsoft.Owin.Security.DataProtection.IDataProtectionProvider>();
 
                     builder.Properties["security.DataProtectionProvider"] = new DataProtectionProviderDelegate(purposes =>
