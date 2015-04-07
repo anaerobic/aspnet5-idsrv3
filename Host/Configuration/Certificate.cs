@@ -53,7 +53,7 @@ namespace Host.Configuration
             return certificate;
         }
 
-        private static string GetAccessibleFilePath(string fileName)
+        public static string GetAccessibleFilePath(string fileName)
         {
             var needFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
             LogProvider.GetCurrentClassLogger().Info("current domain: " + needFile);
