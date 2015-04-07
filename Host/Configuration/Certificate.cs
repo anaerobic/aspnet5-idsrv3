@@ -1,7 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IdentityModel.Selectors;
+using System.IdentityModel.Tokens;
 using System.IO;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography.Xml;
 using Thinktecture.IdentityServer.Core.Logging;
 
 namespace Host.Configuration

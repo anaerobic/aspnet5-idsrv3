@@ -1,4 +1,5 @@
-﻿using Host.Configuration;
+﻿using Autofac.Builder;
+using Host.Configuration;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Diagnostics;
 using Microsoft.Framework.DependencyInjection;
@@ -8,6 +9,7 @@ using Microsoft.Owin.Security.DataProtection;
 using Thinktecture.IdentityServer.Core.Configuration;
 using Thinktecture.IdentityServer.Core.Logging;
 using Thinktecture.IdentityServer.Core.Logging.LogProviders;
+using Thinktecture.IdentityServer.Core.Services;
 
 namespace Host
 {
@@ -76,7 +78,8 @@ namespace Host
                 var factory = InMemoryFactory.Create(
                                 users: Users.Get(),
                                 clients: Clients.Get(),
-                                scopes: Scopes.Get());
+                                scopes: Scopes.Get()
+                                );
 
                 var idsrvOptions = new IdentityServerOptions
                 {
@@ -87,6 +90,9 @@ namespace Host
                     SigningCertificate = Certificate.Get(),
                     CorsPolicy = CorsPolicy.AllowAll
                 };
+
+                factory.TokenSigningService = new Registration<ITokenSigningService>(r => new FooTokenSigningService(idsrvOptions));
+
 
                 core.UseIdentityServer(idsrvOptions);
             });
