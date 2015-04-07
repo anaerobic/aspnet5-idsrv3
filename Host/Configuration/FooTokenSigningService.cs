@@ -15,7 +15,10 @@
  */
 
 using System;
+using System.Diagnostics;
 using System.IdentityModel.Tokens;
+using System.IO;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Thinktecture.IdentityModel;
@@ -112,18 +115,20 @@ namespace Host.Configuration
 
             public override SignatureProvider CreateForSigning(SecurityKey key, string algorithm)
             {
-                var signatureProvider = base.CreateForSigning(new X509SecurityKey(_x509), 
+                var signatureProvider = base.CreateForSigning(key, 
                     "http://www.w3.org/2000/09/xmldsig#rsa-sha1");
 
-                LogProvider.GetCurrentClassLogger().Info("current context: " + signatureProvider.Context);
+                LogProvider.GetCurrentClassLogger().Info("current signing context: " + signatureProvider.Context);
 
                 return signatureProvider;
             }
 
             public override SignatureProvider CreateForVerifying(SecurityKey key, string algorithm)
             {
-                var signatureProvider = base.CreateForSigning(new X509SecurityKey(_x509),
+                var signatureProvider = base.CreateForVerifying(key,
                     "http://www.w3.org/2000/09/xmldsig#rsa-sha1");
+
+                LogProvider.GetCurrentClassLogger().Info("current verifying context: " + signatureProvider.Context);
 
                 return signatureProvider;
             }
