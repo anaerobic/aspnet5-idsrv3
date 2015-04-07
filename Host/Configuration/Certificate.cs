@@ -46,6 +46,8 @@ namespace Host.Configuration
             var prov = Crypto.DecodeRsaPrivateKey(keyBuffer);
             certificate.PrivateKey = prov;
 
+            LogProvider.GetCurrentClassLogger().Info("certificate: " + certificate);
+
             LogProvider.GetCurrentClassLogger().Info("HasPrivateKey: " + certificate.HasPrivateKey);
             if (certificate.HasPrivateKey)
                 LogProvider.GetCurrentClassLogger().Info("PrivateKey.SignatureAlgorithm: " + certificate.PrivateKey.SignatureAlgorithm);
