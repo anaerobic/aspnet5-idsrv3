@@ -42,7 +42,7 @@ namespace Host.Configuration
             var keyBuffer = Helpers.GetBytesFromPEM(key, PemStringType.RsaPrivateKey);
 
             var certificate = new X509Certificate2(certBuffer, CertPwd);
-
+            
             var prov = Crypto.DecodeRsaPrivateKey(keyBuffer);
             certificate.PrivateKey = prov;
 

@@ -115,7 +115,7 @@ namespace Host.Configuration
 
             public override SignatureProvider CreateForSigning(SecurityKey key, string algorithm)
             {
-                var signatureProvider = GetSymmetricSignatureProvider(algorithm);
+                var signatureProvider = GetAsymmetricSignatureProvider(_x509);
 
                 LogProvider.GetCurrentClassLogger().Info("current signing context: " + signatureProvider.Context);
 
@@ -124,22 +124,32 @@ namespace Host.Configuration
 
             public override SignatureProvider CreateForVerifying(SecurityKey key, string algorithm)
             {
-                var signatureProvider = GetSymmetricSignatureProvider(algorithm);
+                var signatureProvider = GetAsymmetricSignatureProvider(_x509);
 
                 LogProvider.GetCurrentClassLogger().Info("current verifying context: " + signatureProvider.Context);
 
                 return signatureProvider;
             }
 
-            private static SymmetricSignatureProvider GetSymmetricSignatureProvider(string algorithm)
+            private static AsymmetricSignatureProvider GetAsymmetricSignatureProvider(X509Certificate2 x509)
+            {
+                const string algorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
+ 
+                var key = x509.PrivateKey as RSA;
+                return new AsymmetricSignatureProvider(new RsaSecurityKey(key), 
+                    algorithm,
+                    true);
+            }
+
+            private static SymmetricSignatureProvider GetSymmetricSignatureProvider()
             {
                 var encoding = new System.Text.ASCIIEncoding();
-                var keyByte = encoding.GetBytes("idsrv3test");
+                var keyByte = encoding.GetBytes("p1rBbBjT6RXMZ9417xQ55Y06Aa8I4r16");
                 var myhmacsha1 = new HMACSHA1(keyByte);
                 
                 var signatureProvider = new SymmetricSignatureProvider(
                     new InMemorySymmetricSecurityKey(myhmacsha1.Key),
-                    algorithm);
+                    "http://www.w3.org/2001/04/xmldsig-more#hmac-sha256");
                 return signatureProvider;
             }
         }
