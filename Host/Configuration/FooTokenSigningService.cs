@@ -34,39 +34,18 @@ namespace Host.Configuration
     /// </summary>
     public class FooTokenSigningService : ITokenSigningService
     {
-        /// <summary>
-        /// The identity server options
-        /// </summary>
-        protected readonly IdentityServerOptions _options;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FooTokenSigningService"/> class.
-        /// </summary>
-        /// <param name="options">The options.</param>
-        public FooTokenSigningService(IdentityServerOptions options)
+        private readonly X509SigningCredentials _x509;
+        
+        public FooTokenSigningService(X509SigningCredentials x509)
         {
-            _options = options;
+            _x509 = x509;
         }
-
-        /// <summary>
-        /// Signs the token.
-        /// </summary>
-        /// <param name="token">The token.</param>
-        /// <returns>
-        /// A protected and serialized security token
-        /// </returns>
-        /// <exception cref="System.InvalidOperationException">Invalid token type</exception>
+        
         public virtual Task<string> SignTokenAsync(Token token)
         {
-            return Task.FromResult(CreateJsonWebToken(token, new X509SigningCredentials(_options.SigningCertificate)));
+            return Task.FromResult(CreateJsonWebToken(token, _x509));
         }
-
-        /// <summary>
-        /// Creates the json web token.
-        /// </summary>
-        /// <param name="token">The token.</param>
-        /// <param name="credentials">The credentials.</param>
-        /// <returns></returns>
+        
         protected virtual string CreateJsonWebToken(Token token, SigningCredentials credentials)
         {
             var jwt = new JwtSecurityToken(

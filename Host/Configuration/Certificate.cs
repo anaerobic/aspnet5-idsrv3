@@ -19,21 +19,36 @@ namespace Host.Configuration
         private const string PemName = "device.pem";
         private const string PfxName = "device.pfx";
 
-        public static X509Certificate2 Get()
+        public static X509Certificate2 X509
+        {
+            get
+            {
+                if (_x509 == null)
+                {
+                    _x509 = GetX509FromPemAndKey();
+                }
+
+                LogProvider.GetCurrentClassLogger().Info("HasPrivateKey: " + _x509.HasPrivateKey);
+
+                if (_x509.HasPrivateKey)
+                    LogProvider.GetCurrentClassLogger().Info("PrivateKey.SignatureAlgorithm: " + _x509.PrivateKey.SignatureAlgorithm);
+
+                return _x509;
+            }
+        }
+        private static X509Certificate2 _x509;
+
+        private static X509Certificate2 GetX509FromPfx()
         {
             var certFile = GetAccessibleFilePath(PfxName);
 
             var cert = new X509Certificate2(certFile, CertPwd,
                 X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet);
 
-            LogProvider.GetCurrentClassLogger().Info("HasPrivateKey: " + cert.HasPrivateKey);
-            if (cert.HasPrivateKey)
-                LogProvider.GetCurrentClassLogger().Info("PrivateKey.SignatureAlgorithm: " + cert.PrivateKey.SignatureAlgorithm);
-            
             return cert;
         }
 
-        public static X509Certificate2 GetCertificateFromPEMstring()
+        public static X509Certificate2 GetX509FromPemAndKey()
         {
             var cert = File.ReadAllText(GetAccessibleFilePath(PemName));
             var certBuffer = Helpers.GetBytesFromPEM(cert, PemStringType.Certificate);
@@ -41,18 +56,12 @@ namespace Host.Configuration
             var key = File.ReadAllText(GetAccessibleFilePath(KeyName));
             var keyBuffer = Helpers.GetBytesFromPEM(key, PemStringType.RsaPrivateKey);
 
-            var certificate = new X509Certificate2(certBuffer, CertPwd);
+            var newCert = new X509Certificate2(certBuffer, CertPwd);
             
             var prov = Crypto.DecodeRsaPrivateKey(keyBuffer);
-            certificate.PrivateKey = prov;
-
-            LogProvider.GetCurrentClassLogger().Info("certificate: " + certificate);
-
-            LogProvider.GetCurrentClassLogger().Info("HasPrivateKey: " + certificate.HasPrivateKey);
-            if (certificate.HasPrivateKey)
-                LogProvider.GetCurrentClassLogger().Info("PrivateKey.SignatureAlgorithm: " + certificate.PrivateKey.SignatureAlgorithm);
-
-            return certificate;
+            newCert.PrivateKey = prov;
+            
+            return newCert;
         }
 
         public static string GetAccessibleFilePath(string fileName)

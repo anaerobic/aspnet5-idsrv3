@@ -1,4 +1,5 @@
-﻿using Autofac.Builder;
+﻿using System.IdentityModel.Tokens;
+using Autofac.Builder;
 using Host.Configuration;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Diagnostics;
@@ -81,17 +82,17 @@ namespace Host
                                 scopes: Scopes.Get()
                                 );
 
+                factory.TokenSigningService = new Registration<ITokenSigningService>(r => new FooTokenSigningService(new X509SigningCredentials(Certificate.X509)));
+
                 var idsrvOptions = new IdentityServerOptions
                 {
                     IssuerUri = "https://idsrv3.com",
                     SiteName = "Thinktecture IdentityServer v3",
                     Factory = factory,
                     RequireSsl = false,
-                    SigningCertificate = Certificate.GetCertificateFromPEMstring(),
+                    SigningCertificate = Certificate.X509,
                     CorsPolicy = CorsPolicy.AllowAll
                 };
-
-                factory.TokenSigningService = new Registration<ITokenSigningService>(r => new FooTokenSigningService(idsrvOptions));
 
                 core.UseIdentityServer(idsrvOptions);
             });
