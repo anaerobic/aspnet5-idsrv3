@@ -29,8 +29,7 @@ namespace Host.Configuration
             LogProvider.GetCurrentClassLogger().Info("HasPrivateKey: " + cert.HasPrivateKey);
             if (cert.HasPrivateKey)
                 LogProvider.GetCurrentClassLogger().Info("PrivateKey.SignatureAlgorithm: " + cert.PrivateKey.SignatureAlgorithm);
-
-
+            
             return cert;
         }
 
@@ -46,6 +45,10 @@ namespace Host.Configuration
 
             var prov = Crypto.DecodeRsaPrivateKey(keyBuffer);
             certificate.PrivateKey = prov;
+
+            LogProvider.GetCurrentClassLogger().Info("HasPrivateKey: " + certificate.HasPrivateKey);
+            if (certificate.HasPrivateKey)
+                LogProvider.GetCurrentClassLogger().Info("PrivateKey.SignatureAlgorithm: " + certificate.PrivateKey.SignatureAlgorithm);
 
             return certificate;
         }

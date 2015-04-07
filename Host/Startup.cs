@@ -93,7 +93,6 @@ namespace Host
 
                 factory.TokenSigningService = new Registration<ITokenSigningService>(r => new FooTokenSigningService(idsrvOptions));
 
-
                 core.UseIdentityServer(idsrvOptions);
             });
         }
