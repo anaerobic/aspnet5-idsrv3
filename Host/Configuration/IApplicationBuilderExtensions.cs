@@ -1,10 +1,9 @@
 ﻿using System;
-using Thinktecture.IdentityServer.Core.Configuration;
-using System.Threading.Tasks;
 using System.Collections.Generic;
-using Owin;
+using System.Threading.Tasks;
 using Microsoft.Framework.DependencyInjection;
-
+using Owin;
+using Thinktecture.IdentityServer.Core.Configuration;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.AspNet.Builder

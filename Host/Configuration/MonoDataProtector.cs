@@ -3,7 +3,7 @@ using System.IO;
 using System.Security.Cryptography;
 using Microsoft.Owin.Security.DataProtection;
 
-namespace AspNet5Host.Configuration
+namespace Host.Configuration
 {
     public class MonoDataProtector : IDataProtector, Thinktecture.IdentityServer.Core.Configuration.IDataProtector
     {
@@ -48,7 +48,6 @@ namespace AspNet5Host.Configuration
                     {
                         writer.Write(purpose);
                     }
-                    Console.WriteLine("purposes: " + String.Join(",", purposes));
                 }
 
                 return sha256.Hash;

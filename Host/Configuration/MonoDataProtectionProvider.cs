@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Owin.Security.DataProtection;
 
-namespace AspNet5Host.Configuration
+namespace Host.Configuration
 {
     public class MonoDataProtectionProvider : IDataProtectionProvider
     {

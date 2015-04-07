@@ -1,4 +1,4 @@
-﻿using AspNet5Host.Configuration;
+﻿using Host.Configuration;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Diagnostics;
 using Microsoft.Framework.DependencyInjection;
@@ -9,7 +9,7 @@ using Thinktecture.IdentityServer.Core.Configuration;
 using Thinktecture.IdentityServer.Core.Logging;
 using Thinktecture.IdentityServer.Core.Logging.LogProviders;
 
-namespace AspNet5Host
+namespace Host
 {
     public class Startup
     {

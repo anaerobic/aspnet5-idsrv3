@@ -2,7 +2,7 @@
 using Thinktecture.IdentityServer.Core;
 using Thinktecture.IdentityServer.Core.Models;
 
-namespace AspNet5Host.Configuration
+namespace Host.Configuration
 {
     public class Scopes
     {
