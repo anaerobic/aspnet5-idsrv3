@@ -115,7 +115,7 @@ namespace Host.Configuration
 
             public override SignatureProvider CreateForSigning(SecurityKey key, string algorithm)
             {
-                var signatureProvider = GetSymmetricSignatureProvider();
+                var signatureProvider = GetSymmetricSignatureProvider(algorithm);
 
                 LogProvider.GetCurrentClassLogger().Info("current signing context: " + signatureProvider.Context);
 
@@ -124,21 +124,21 @@ namespace Host.Configuration
 
             public override SignatureProvider CreateForVerifying(SecurityKey key, string algorithm)
             {
-                var signatureProvider = GetSymmetricSignatureProvider();
+                var signatureProvider = GetSymmetricSignatureProvider(algorithm);
 
                 LogProvider.GetCurrentClassLogger().Info("current verifying context: " + signatureProvider.Context);
 
                 return signatureProvider;
             }
 
-            private static SymmetricSignatureProvider GetSymmetricSignatureProvider()
+            private static SymmetricSignatureProvider GetSymmetricSignatureProvider(string algorithm)
             {
                 var key = File.ReadAllText(Certificate.GetAccessibleFilePath("device.key"));
                 var keyBuffer = Helpers.GetBytesFromPEM(key, PemStringType.RsaPrivateKey);
 
                 var signatureProvider = new SymmetricSignatureProvider(
                     new InMemorySymmetricSecurityKey(keyBuffer),
-                    "http://www.w3.org/2000/09/xmldsig#rsa-sha1");
+                    algorithm);
                 return signatureProvider;
             }
         }
