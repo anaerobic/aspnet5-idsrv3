@@ -112,13 +112,13 @@ namespace Host.Configuration
             public override SignatureProvider CreateForSigning(SecurityKey key, string algorithm)
             {
                 return base.CreateForSigning(new X509AsymmetricSecurityKey(_x509),
-                    "http://www.w3.org/2001/04/xmldsig-more#rsa-sha1");
+                    "http://www.w3.org/2000/09/xmldsig#rsa-sha1");
             }
 
             public override SignatureProvider CreateForVerifying(SecurityKey key, string algorithm)
             {
                 return base.CreateForVerifying(new X509AsymmetricSecurityKey(_x509),
-                    "http://www.w3.org/2001/04/xmldsig-more#rsa-sha1");
+                    "http://www.w3.org/2000/09/xmldsig#rsa-sha1");
             }
         }
     }
