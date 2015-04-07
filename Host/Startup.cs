@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using AspNet5Host.Configuration;
+﻿using AspNet5Host.Configuration;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Diagnostics;
 using Microsoft.Framework.DependencyInjection;
@@ -8,6 +7,7 @@ using Microsoft.Framework.Logging.Console;
 using Microsoft.Owin.Security.DataProtection;
 using Thinktecture.IdentityServer.Core.Configuration;
 using Thinktecture.IdentityServer.Core.Logging;
+using Thinktecture.IdentityServer.Core.Logging.LogProviders;
 
 namespace AspNet5Host
 {
@@ -66,7 +66,7 @@ namespace AspNet5Host
 
         public void Configure(IApplicationBuilder app)
         {
-            LogProvider.SetCurrentLogProvider(new DiagnosticsTraceLogProvider());
+            LogProvider.SetCurrentLogProvider(new ColouredConsoleLogProvider());
             //LogProvider.SetCurrentLogProvider(new TraceSourceLogProvider());
             
             app.UseStaticFiles();
