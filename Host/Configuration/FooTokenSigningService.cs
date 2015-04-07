@@ -113,13 +113,13 @@ namespace Host.Configuration
             private static AsymmetricSignatureProvider GetAsymmetricSignatureProvider(X509Certificate2 x509)
             {
                 const string algorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
-                
+
+                x509 = Certificate.X509;
+
                 LogProvider.GetCurrentClassLogger().Info("x509: " + x509);
 
-                LogProvider.GetCurrentClassLogger().Info("HasPrivateKey: " + x509.HasPrivateKey);
-                if (x509.HasPrivateKey)
-                    LogProvider.GetCurrentClassLogger().Info("PrivateKey.SignatureAlgorithm: " + x509.PrivateKey.SignatureAlgorithm);
-
+                LogProvider.GetCurrentClassLogger().Info("x509.PrivateKey: " + x509.PrivateKey);
+                
                 var key = x509.PrivateKey as RSA;
 
                 return new AsymmetricSignatureProvider(new RsaSecurityKey(key), 
