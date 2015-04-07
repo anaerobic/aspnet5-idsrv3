@@ -8,29 +8,30 @@ namespace Host.Configuration
 {
     static class Certificate
     {
+        private const string PfxPwd = "idsrv3test";
+        private const string PfxName = "device.pfx";
+
         public static X509Certificate2 Get()
         {
-            const string idsrv3Test = "idsrv3test.pfx";
-
-            var certFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, idsrv3Test);
+            var certFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, PfxName);
             LogProvider.GetCurrentClassLogger().Info("current domain: " + certFile);
 
             if (!File.Exists(certFile))
             {
-                var localFile = Path.Combine(Environment.CurrentDirectory, idsrv3Test);
+                var localFile = Path.Combine(Environment.CurrentDirectory, PfxName);
                 LogProvider.GetCurrentClassLogger().Info("current environment: " + localFile);
 
                 if (!File.Exists(localFile))
                 {
                     // ReSharper disable once AssignNullToNotNullAttribute
-                    localFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), idsrv3Test);
+                    localFile = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), PfxName);
                     LogProvider.GetCurrentClassLogger().Info("assembly location: " + localFile);
                 }
 
                 File.Copy(localFile, certFile);
             }
 
-            var cert = new X509Certificate2(certFile, Path.GetFileNameWithoutExtension(idsrv3Test),
+            var cert = new X509Certificate2(certFile, PfxPwd,
                 X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.PersistKeySet);
 
             LogProvider.GetCurrentClassLogger().Info("HasPrivateKey: " + cert.HasPrivateKey);
