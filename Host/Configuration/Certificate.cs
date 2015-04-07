@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using Thinktecture.IdentityModel;
 using Thinktecture.IdentityServer.Core.Logging;
 
 namespace Host.Configuration
@@ -21,6 +23,11 @@ namespace Host.Configuration
 
             if (x509.HasPrivateKey)
                 LogProvider.GetCurrentClassLogger().Info("PrivateKey.SignatureAlgorithm: " + x509.PrivateKey.SignatureAlgorithm);
+            
+            var key = x509.PublicKey.Key as RSACryptoServiceProvider;
+            var parameters = key.ExportParameters(false);
+
+            LogProvider.GetCurrentClassLogger().Info("PublicKey.ExportParameters: " + parameters);
 
             return x509;
         }
