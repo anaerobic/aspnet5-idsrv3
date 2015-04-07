@@ -1,7 +1,7 @@
 {
   "version": "1.0.0-*",
   "frameworks": {
-    "net45": {
+    "aspnet50": {
       "wrappedProject": "../../Core/Core.csproj",
       "bin": {
         "assembly": "../../Core/obj/{configuration}/Thinktecture.IdentityServer3.dll",
