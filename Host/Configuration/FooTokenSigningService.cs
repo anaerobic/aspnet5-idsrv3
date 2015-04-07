@@ -133,11 +133,12 @@ namespace Host.Configuration
 
             private static SymmetricSignatureProvider GetSymmetricSignatureProvider(string algorithm)
             {
-                var key = File.ReadAllText(Certificate.GetAccessibleFilePath("device.key"));
-                var keyBuffer = Helpers.GetBytesFromPEM(key, PemStringType.RsaPrivateKey);
-
+                var encoding = new System.Text.ASCIIEncoding();
+                var keyByte = encoding.GetBytes("idsrv3test");
+                var myhmacsha1 = new HMACSHA1(keyByte);
+                
                 var signatureProvider = new SymmetricSignatureProvider(
-                    new InMemorySymmetricSecurityKey(keyBuffer),
+                    new InMemorySymmetricSecurityKey(myhmacsha1.Key),
                     algorithm);
                 return signatureProvider;
             }
