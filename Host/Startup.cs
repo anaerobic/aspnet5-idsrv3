@@ -82,7 +82,7 @@ namespace Host
                                 scopes: Scopes.Get()
                                 );
 
-                factory.TokenSigningService = new Registration<ITokenSigningService>(r => new FooTokenSigningService(new X509SigningCredentials(Certificate.X509)));
+                factory.TokenSigningService = new Registration<ITokenSigningService>(r => new FooTokenSigningService(new X509SigningCredentials(Certificate.GetX509())));
 
                 var idsrvOptions = new IdentityServerOptions
                 {
@@ -90,7 +90,7 @@ namespace Host
                     SiteName = "Thinktecture IdentityServer v3",
                     Factory = factory,
                     RequireSsl = false,
-                    SigningCertificate = Certificate.X509,
+                    SigningCertificate = Certificate.GetX509(),
                     CorsPolicy = CorsPolicy.AllowAll
                 };
 

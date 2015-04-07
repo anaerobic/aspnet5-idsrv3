@@ -13,24 +13,17 @@ namespace Host.Configuration
         private const string PemName = "device.pem";
         private const string PfxName = "device.pfx";
 
-        public static X509Certificate2 X509
+        public static X509Certificate2 GetX509()
         {
-            get
-            {
-                if (_x509 == null)
-                {
-                    _x509 = GetX509FromPemAndKey();
-                }
+            var x509 = GetX509FromPfx();
 
-                LogProvider.GetCurrentClassLogger().Info("HasPrivateKey: " + _x509.HasPrivateKey);
+            LogProvider.GetCurrentClassLogger().Info("HasPrivateKey: " + x509.HasPrivateKey);
 
-                if (_x509.HasPrivateKey)
-                    LogProvider.GetCurrentClassLogger().Info("PrivateKey.SignatureAlgorithm: " + _x509.PrivateKey.SignatureAlgorithm);
+            if (x509.HasPrivateKey)
+                LogProvider.GetCurrentClassLogger().Info("PrivateKey.SignatureAlgorithm: " + x509.PrivateKey.SignatureAlgorithm);
 
-                return _x509;
-            }
+            return x509;
         }
-        private static X509Certificate2 _x509;
 
         private static X509Certificate2 GetX509FromPfx()
         {
@@ -42,7 +35,7 @@ namespace Host.Configuration
             return cert;
         }
 
-        public static X509Certificate2 GetX509FromPemAndKey()
+        private static X509Certificate2 GetX509FromPemAndKey()
         {
             var cert = File.ReadAllText(GetAccessibleFilePath(PemName));
             var certBuffer = Helpers.GetBytesFromPEM(cert, PemStringType.Certificate);
@@ -51,10 +44,10 @@ namespace Host.Configuration
             var keyBuffer = Helpers.GetBytesFromPEM(key, PemStringType.RsaPrivateKey);
 
             var newCert = new X509Certificate2(certBuffer, CertPwd);
-            
+
             var prov = Crypto.DecodeRsaPrivateKey(keyBuffer);
             newCert.PrivateKey = prov;
-            
+
             return newCert;
         }
 

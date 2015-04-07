@@ -66,7 +66,7 @@ namespace Host.Configuration
 
             var handler = new JwtSecurityTokenHandler
             {
-                SignatureProviderFactory = new FooSignatureProviderFactory(Certificate.GetX509FromPemAndKey())
+                SignatureProviderFactory = new FooSignatureProviderFactory(Certificate.GetX509())
             };
 
             return handler.WriteToken(jwt);
@@ -121,18 +121,6 @@ namespace Host.Configuration
                 return new AsymmetricSignatureProvider(new X509AsymmetricSecurityKey(x509), 
                     algorithm,
                     true);
-            }
-
-            private static SymmetricSignatureProvider GetSymmetricSignatureProvider()
-            {
-                var encoding = new System.Text.ASCIIEncoding();
-                var keyByte = encoding.GetBytes("p1rBbBjT6RXMZ9417xQ55Y06Aa8I4r16");
-                var myhmacsha1 = new HMACSHA1(keyByte);
-                
-                var signatureProvider = new SymmetricSignatureProvider(
-                    new InMemorySymmetricSecurityKey(myhmacsha1.Key),
-                    "http://www.w3.org/2001/04/xmldsig-more#hmac-sha256");
-                return signatureProvider;
             }
         }
     }
