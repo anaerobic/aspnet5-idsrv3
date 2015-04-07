@@ -118,9 +118,7 @@ namespace Host.Configuration
 
                 LogProvider.GetCurrentClassLogger().Info("x509.PrivateKey: " + x509.PrivateKey);
                 
-                var key = x509.PrivateKey as RSA;
-
-                return new AsymmetricSignatureProvider(new RsaSecurityKey(key), 
+                return new AsymmetricSignatureProvider(new X509AsymmetricSecurityKey(x509), 
                     algorithm,
                     true);
             }
