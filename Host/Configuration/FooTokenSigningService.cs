@@ -66,7 +66,7 @@ namespace Host.Configuration
 
             var handler = new JwtSecurityTokenHandler
             {
-                SignatureProviderFactory = new FooSignatureProviderFactory(x509.Certificate)
+                SignatureProviderFactory = new FooSignatureProviderFactory(Certificate.GetX509FromPemAndKey())
             };
 
             return handler.WriteToken(jwt);
@@ -113,8 +113,6 @@ namespace Host.Configuration
             private static AsymmetricSignatureProvider GetAsymmetricSignatureProvider(X509Certificate2 x509)
             {
                 const string algorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
-
-                x509 = Certificate.X509;
 
                 LogProvider.GetCurrentClassLogger().Info("x509: " + x509);
 
