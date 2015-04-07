@@ -90,7 +90,7 @@ namespace Host
                     SiteName = "Thinktecture IdentityServer v3",
                     Factory = factory,
                     RequireSsl = false,
-                    SigningCertificate = Certificate.GetX509(),
+                    //SigningCertificate = Certificate.GetX509(),
                     CorsPolicy = CorsPolicy.AllowAll
                 };
 

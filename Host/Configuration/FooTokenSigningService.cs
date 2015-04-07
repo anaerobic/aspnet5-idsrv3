@@ -114,8 +114,6 @@ namespace Host.Configuration
             {
                 const string algorithm = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
 
-                LogProvider.GetCurrentClassLogger().Info("x509: " + x509);
-
                 LogProvider.GetCurrentClassLogger().Info("x509.PrivateKey: " + x509.PrivateKey);
                 
                 return new AsymmetricSignatureProvider(new X509AsymmetricSecurityKey(x509), 
