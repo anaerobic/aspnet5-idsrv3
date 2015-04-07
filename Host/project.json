@@ -36,9 +36,7 @@
         "Microsoft.Owin.Host.HttpListener": "3.0.1",
         "Microsoft.Owin.Security.Google": "3.0.1",
         "Microsoft.Owin.Security.OpenIdConnect": "3.0.1",
-        "Microsoft.Framework.Logging.Console": "1.0.0-beta3",
-        "Microsoft.Framework.Runtime": "1.0.0-beta3",
-        "Microsoft.Framework.Runtime.Roslyn": "1.0.0-beta3"
+        "Microsoft.Framework.Logging.Console": "1.0.0-beta3"
     },
     "commands": {
         "web": "Microsoft.AspNet.Hosting --server Microsoft.AspNet.Server.WebListener --server.urls https://localhost:44333",
